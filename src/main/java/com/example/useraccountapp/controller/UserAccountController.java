@@ -39,4 +39,14 @@ public class UserAccountController {
 
         return result;
     }
+
+    @GetMapping("/resendVerifyRegistrationToken")
+    public String resendVerificationToken(@RequestParam("oldToken") String oldToken, HttpServletRequest request){
+
+        String feedback="";
+
+        feedback= userService.resendVerificationToken(oldToken,request);
+
+        return feedback;
+    }
 }

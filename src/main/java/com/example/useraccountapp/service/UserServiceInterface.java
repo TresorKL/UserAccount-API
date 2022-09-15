@@ -12,4 +12,6 @@ public interface UserServiceInterface {
     String createAppUrl(HttpServletRequest request);
 
     String validateToken(String token);
+
+    String  resendVerificationToken(String oldToken, HttpServletRequest request);
 }
