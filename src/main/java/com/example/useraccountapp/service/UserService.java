@@ -11,6 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Calendar;
 
 @Service
 public class UserService implements UserServiceInterface {
@@ -52,5 +53,28 @@ public class UserService implements UserServiceInterface {
                 ":"+
                 request.getServerPort()+"/"+
                 request.getContextPath();
+    }
+
+    @Override
+    public String validateToken(String token) {
+
+        VerificationToken verificationToken= verificationTokenRepository.findByToken(token);
+
+        if(verificationToken==null){
+            return "invalid";
+        }
+
+        User user = verificationToken.getUser();
+        Calendar calendar= Calendar.getInstance();
+
+        if(verificationToken.getExpirationDate().getTime() - calendar.getTime().getTime()<=0){
+            verificationTokenRepository.delete(verificationToken);
+            return "Expired";
+        }
+
+        user.setAccountEnable(true);
+        userRepository.save(user);
+
+        return "Valid";
     }
 }

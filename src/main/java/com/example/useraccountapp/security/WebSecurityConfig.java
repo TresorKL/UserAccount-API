@@ -12,7 +12,7 @@ import java.net.http.HttpClient;
 @EnableWebSecurity
 public class WebSecurityConfig {
 
-    public static final String [] WITHE_LIST_URLS={"/register"};
+    public static final String [] WITHE_LIST_URLS={"/register","/verifyRegistrationToken"};
     @Bean
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder(11);

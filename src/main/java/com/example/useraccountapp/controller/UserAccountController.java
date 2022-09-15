@@ -7,9 +7,7 @@ import com.example.useraccountapp.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -23,11 +21,22 @@ public class UserAccountController {
     private ApplicationEventPublisher publisher;
 
     @PostMapping("/register")
-    public User createUserAccount(@RequestBody UserModel userModel, HttpServletRequest request){
+    public String createUserAccount(@RequestBody UserModel userModel, HttpServletRequest request){
 
         User user= userService.registerUser(userModel);
         publisher.publishEvent(new RegistrationCompleteEvent(user, userService.createAppUrl(request)));
 
-        return  user;
+        return  "success";
+    }
+
+    @GetMapping("/verifyRegistrationToken")
+    public String verifyRegistrationToken(@RequestParam("token") String token){
+
+        String result ="";
+
+        result =userService.validateToken(token);
+
+
+        return result;
     }
 }

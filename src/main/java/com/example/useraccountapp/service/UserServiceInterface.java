@@ -10,4 +10,6 @@ public interface UserServiceInterface {
     void saveVerificationToken(User user, String token);
 
     String createAppUrl(HttpServletRequest request);
+
+    String validateToken(String token);
 }
